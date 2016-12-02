@@ -11,5 +11,7 @@
 ```
 
 ```html
-<intensity-slider></intensity-slider>
+<intensity-slider>
+  <input type="range" min="1" max="10" value="1" />
+</intensity-slider>
 ```

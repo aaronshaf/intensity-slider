@@ -4,8 +4,7 @@
   <title>intensity-slider</title>
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" />
   <script src="https://unpkg.com/@webcomponents/custom-elements@1.0.0-alpha.3"></script>
-  <script src="https://unpkg.com/intensity-slider"></script>
-  <link href="styles.css" rel="stylesheet">
+  <script src="https://unpkg.com/intensity-slider@1.0.0"></script>
   <style>
     pre { margin-top: 8px; }
     label, .label-text {
@@ -29,7 +28,7 @@
     <h1>intensity-slider</h1>
     <div class="example">
       <intensity-slider>
-        <input id="example1" type="checkbox" name="joyful" value="yes" checked />
+        <input id="example1" type="range" name="intense" min="1" max="10" value="1" />
       </intensity-slider>
       <pre id="example1code"></pre>
     </div>
@@ -37,9 +36,10 @@
     function showExample1 (event) {
       example1code.innerHTML = escapeHtml(
 `<intensity-slider>
-  <input type="checkbox" name="joyful" value="yes" />
+  <input type="range" min="1" max="10" value="${example1.value}" />
 </intensity-slider>`)
     }
+    example1.addEventListener("change", showExample1)
     showExample1()
     </script>
   </div>

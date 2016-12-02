@@ -32,6 +32,9 @@ export default class MyComponent extends Component {
     this.setState({ intensity })
     this.props.input.value = intensity
     this.props.input.focus()
+    const _event = document.createEvent('HTMLEvents')
+    _event.initEvent('change', false, true)
+    this.props.input.dispatchEvent(_event)
   }
 
   jitter () {
