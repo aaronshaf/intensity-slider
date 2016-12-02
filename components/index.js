@@ -33,11 +33,14 @@ export default class MyComponent extends Component {
     document.removeEventListener('mouseup', this.handleMouseUp)
   }
   handleSlide = (event) => {
-    const max = parseInt(this.props.input.max, 10)
+    const min = parseInt(this.props.input.min || 1, 10)
+    const max = parseInt(this.props.input.max || 100, 10)
     let intensity = Math.round(
-      ((event.clientX - this.img.offsetLeft) / this.img.width) * max
+      ((event.clientX - this.div.offsetLeft - 10) / this.img.width) * max
     ) - 1
-    if (intensity > max) {
+    if (intensity < min) {
+      intensity = min
+    } else if (intensity > max) {
       intensity = max
     }
     this.setState({ intensity })
@@ -50,16 +53,21 @@ export default class MyComponent extends Component {
   }
   handleClick = () => { this.props.input.focus() }
   jitter = () => {
-    this.img.style.marginLeft = `${Math.random() * 5 * this.state.intensity}px`
-    this.img.style.marginTop = `${Math.random() * 5 * this.state.intensity}px`
+    this.img.style.marginLeft = `${Math.random() * this.state.intensity}px`
+    this.img.style.marginTop = `${Math.random() * this.state.intensity}px`
   }
   setImg = (node) => { this.img = node }
+  setDiv = (node) => { this.div = node }
   componentDidMount = () => { this.interval = setInterval(this.jitter, 50) }
   componentWillUnmount = () => { clearInterval(this.interval) }
 
   render () {
+    const left = (this.state.intensity / parseInt(this.props.input.max, 10)) * 250
     return (
-      <div style='position: relative; height: 300px;width: 300px;user-select: none;'>
+      <div
+        ref={this.setDiv}
+        style='position: relative; height: 300px;width: 300px;user-select: none;'
+      >
         <img
           style={`user-select: none;width: 250px; height: 250px;border: 10px solid ${this.state.hasFocus ? 'blue' : 'transparent'}`}
           onClick={this.handleClick}
@@ -74,7 +82,7 @@ export default class MyComponent extends Component {
           onMouseDown={this.handleMouseDown}
           onMouseMove={this.handleMouseMove}
           onMouseUp={this.handleMouseUp}
-          style={`position: absolute; height: 250px; width: 15px; background-color: red;top: 0;left: ${((this.state.intensity - 1) / 9) * 250}px;`}
+          style={`position: absolute; height: 250px; width: 15px; background-color: red;top: 0;left: ${left}px;`}
         />
       </div>
     )
