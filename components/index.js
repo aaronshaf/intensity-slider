@@ -10,16 +10,28 @@ export default class MyComponent extends Component {
     this.props.input.addEventListener('input', this.handleInput)
     this.state = {
       hasFocus: false,
-      intensity: this.props.input.value
+      intensity: this.props.input.value,
+      isSliding: false
     }
   }
 
   handleFocus = () => { this.setState({hasFocus: true}) }
   handleBlur = () => { this.setState({hasFocus: false}) }
-  handleInput = () => {
-    this.setState({ intensity: this.props.input.value })
+  handleInput = () => { this.setState({ intensity: this.props.input.value }) }
+  handleMouseDown = (event) => {
+    this.setState({ isSliding: true })
+    document.addEventListener('mouseup', this.handleMouseUp)
   }
-  handleClick = (event) => {
+  handleMouseMove = (event) => {
+    if (this.state.isSliding) {
+      this.handleSlide(event)
+    }
+  }
+  handleMouseUp = () => {
+    this.setState({ isSliding: false })
+    document.removeEventListener('mouseup', this.handleMouseUp)
+  }
+  handleSlide = (event) => {
     const intensity = Math.round(
       ((event.clientX - event.target.offsetLeft) / event.target.width) * 10
     ) - 1
@@ -27,9 +39,9 @@ export default class MyComponent extends Component {
     this.props.input.value = intensity
     this.props.input.focus()
 
-    const _event = document.createEvent('HTMLEvents')
-    _event.initEvent('change', false, true)
-    this.props.input.dispatchEvent(_event)
+    const changeEvent = document.createEvent('HTMLEvents')
+    changeEvent.initEvent('change', false, true)
+    this.props.input.dispatchEvent(changeEvent)
   }
   jitter = () => {
     this.img.style.marginLeft = `${Math.random() * 5 * this.state.intensity}px`
@@ -44,7 +56,10 @@ export default class MyComponent extends Component {
       <div style="position: relative;">
         <img
           style={`width: 250px; height: 250px;`}
-          onClick={this.handleClick}
+          onMouseDown={this.handleMouseDown}
+          onMouseMove={this.handleMouseMove}
+          onMouseUp={this.handleMouseUp}
+          onDragStart={(event) => {event.preventDefault()}}
           ref={this.setImg}
           src="https://d3vv6lp55qjaqc.cloudfront.net/items/0s2x113v3p3R0i0D1G00/Screen%20Shot%202016-12-01%20at%204.22.24%20PM.png?X-CloudApp-Visitor-Id=8c7c3ddb4f82754e00f6dac0eaa0cbfa&v=416b811a"
         />
