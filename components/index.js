@@ -19,24 +19,34 @@ export default class MyComponent extends Component {
   handleBlur = () => { this.setState({hasFocus: false}) }
   handleInput = () => { this.setState({ intensity: this.props.input.value }) }
   handleMouseDown = (event) => {
-    this.setState({ isSliding: true })
-    this.handleSlide(event)
+    this.setState({
+      isSliding: true,
+      hasFocus: true
+    })
+    this.props.input.focus()
+    this.handleSlide(event.clientX)
     document.addEventListener('mouseup', this.handleMouseUp)
   }
   handleMouseMove = (event) => {
     if (this.state.isSliding) {
-      this.handleSlide(event)
+      this.handleSlide(event.clientX)
     }
+  }
+  handleTouchStart = (event) => {
+    this.handleSlide(event.touches[0].clientX)
+  }
+  handleTouchMove = (event) => {
+    this.handleSlide(event.touches[0].clientX)
   }
   handleMouseUp = () => {
     this.setState({ isSliding: false })
     document.removeEventListener('mouseup', this.handleMouseUp)
   }
-  handleSlide = (event) => {
+  handleSlide = (clientX) => {
     const min = parseInt(this.props.input.min || 1, 10)
     const max = parseInt(this.props.input.max || 100, 10)
     let intensity = Math.round(
-      ((event.clientX - this.div.offsetLeft - 10) / this.img.width) * max
+      ((clientX - this.div.offsetLeft - 10) / this.img.width) * max
     ) - 1
     if (intensity < min) {
       intensity = min
@@ -67,22 +77,21 @@ export default class MyComponent extends Component {
       <div
         ref={this.setDiv}
         style='position: relative; height: 300px;width: 300px;user-select: none;'
+        onClick={this.handleClick}
+        onMouseDown={this.handleMouseDown}
+        onMouseMove={this.handleMouseMove}
+        onMouseUp={this.handleMouseUp}
+        onTouchStart={this.handleTouchStart}
+        onTouchMove={this.handleTouchMove}
+        onTouchEnd={this.handleMouseUp}
       >
         <img
           style={`user-select: none;width: 250px; height: 250px;border: 10px solid ${this.state.hasFocus ? 'blue' : 'transparent'}`}
-          onClick={this.handleClick}
-          onMouseDown={this.handleMouseDown}
-          onMouseMove={this.handleMouseMove}
-          onMouseUp={this.handleMouseUp}
           onDragStart={(event) => {event.preventDefault()}}
           ref={this.setImg}
           src="https://d3vv6lp55qjaqc.cloudfront.net/items/0s2x113v3p3R0i0D1G00/Screen%20Shot%202016-12-01%20at%204.22.24%20PM.png?X-CloudApp-Visitor-Id=8c7c3ddb4f82754e00f6dac0eaa0cbfa&v=416b811a"
         />
         <div
-          onClick={this.handleClick}
-          onMouseDown={this.handleMouseDown}
-          onMouseMove={this.handleMouseMove}
-          onMouseUp={this.handleMouseUp}
           style={`position: absolute; height: 250px; width: 15px; background-color: red;top: 0;left: ${left}px;`}
         />
       </div>
