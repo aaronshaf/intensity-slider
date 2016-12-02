@@ -7,7 +7,7 @@
 
 ```html
 <!-- Our custom element's source -->
-<script src="https://unpkg.com/intensity-slider@1.0.3"></script>
+<script src="https://unpkg.com/intensity-slider@1.0.4"></script>
 ```
 
 ```html
