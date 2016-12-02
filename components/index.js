@@ -43,6 +43,7 @@ export default class MyComponent extends Component {
     changeEvent.initEvent('change', false, true)
     this.props.input.dispatchEvent(changeEvent)
   }
+  handleClick = () => { this.props.input.focus() }
   jitter = () => {
     this.img.style.marginLeft = `${Math.random() * 5 * this.state.intensity}px`
     this.img.style.marginTop = `${Math.random() * 5 * this.state.intensity}px`
@@ -53,9 +54,10 @@ export default class MyComponent extends Component {
 
   render () {
     return (
-      <div style="position: relative; height: 300px;">
+      <div style='position: relative; height: 300px;'>
         <img
-          style={`width: 250px; height: 250px;`}
+          style={`width: 250px; height: 250px;border: 10px solid ${this.state.hasFocus ? 'blue' : 'transparent'}`}
+          onClick={this.handleClick}
           onMouseDown={this.handleMouseDown}
           onMouseMove={this.handleMouseMove}
           onMouseUp={this.handleMouseUp}
@@ -63,7 +65,7 @@ export default class MyComponent extends Component {
           ref={this.setImg}
           src="https://d3vv6lp55qjaqc.cloudfront.net/items/0s2x113v3p3R0i0D1G00/Screen%20Shot%202016-12-01%20at%204.22.24%20PM.png?X-CloudApp-Visitor-Id=8c7c3ddb4f82754e00f6dac0eaa0cbfa&v=416b811a"
         />
-        <div style={`position: absolute; height: 250px; width: 15px; background-color: blue;top: 0;left: ${((this.state.intensity - 1) / 9) * 250}px;`}></div>
+        <div style={`position: absolute; height: 250px; width: 15px; background-color: red;top: 0;left: ${((this.state.intensity - 1) / 9) * 250}px;`}></div>
       </div>
     )
   }
