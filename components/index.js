@@ -33,12 +33,14 @@ export default class MyComponent extends Component {
     }
   }
   handleTouchStart = (event) => {
+    this.setState({ isSliding: true })
     this.handleSlide(event.touches[0].clientX)
   }
   handleTouchMove = (event) => {
     this.handleSlide(event.touches[0].clientX)
   }
   handleTouchEnd = (event) => {
+    this.setState({ isSliding: false })
     this.handleSlide(event.changedTouches[0].clientX)
   }
   handleMouseUp = () => {
