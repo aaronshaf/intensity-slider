@@ -38,6 +38,9 @@ export default class MyComponent extends Component {
   handleTouchMove = (event) => {
     this.handleSlide(event.touches[0].clientX)
   }
+  handleTouchEnd = (event) => {
+    this.handleSlide(event.changedTouches[0].clientX)
+  }
   handleMouseUp = () => {
     this.setState({ isSliding: false })
     document.removeEventListener('mouseup', this.handleMouseUp)
@@ -83,7 +86,7 @@ export default class MyComponent extends Component {
         onMouseUp={this.handleMouseUp}
         onTouchStart={this.handleTouchStart}
         onTouchMove={this.handleTouchMove}
-        onTouchEnd={this.handleMouseUp}
+        onTouchEnd={this.handleTouchEnd}
       >
         <img
           style={`user-select: none;width: 250px; height: 250px;border: 10px solid ${this.state.hasFocus ? 'blue' : 'transparent'}`}
