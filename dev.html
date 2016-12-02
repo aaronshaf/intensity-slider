@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>intensity-slider</title>
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" />
+  <script src="https://unpkg.com/@webcomponents/custom-elements@1.0.0-alpha.3"></script>
+  <script src="index.js"></script>
+  <link href="styles.css" rel="stylesheet">
+  <style>
+    pre { margin-top: 8px; }
+    label, .label-text {
+      vertical-align: middle;
+      font-weight: normal;
+      margin-bottom: 0; /* override bootstrap */
+    }
+    .example {
+      margin-top: 36px;
+      margin-bottom: 36px;
+    }
+  </style>
+  <script>
+  // https://github.com/component/escape-html/blob/master/index.js
+  var matchHtmlRegExp = /[""&<>]/;
+  function escapeHtml(a){var b=""+a,c=matchHtmlRegExp.exec(b);if(!c)return b;var d,e="",f=0,g=0;for(f=c.index;f<b.length;f++){switch(b.charCodeAt(f)){case 34:d="&quot;";break;case 38:d="&amp;";break;case 39:d="&#39;";break;case 60:d="&lt;";break;case 62:d="&gt;";break;default:continue}g!==f&&(e+=b.substring(g,f)),g=f+1,e+=d}return g!==f?e+b.substring(g,f):e}
+  </script>
+</head>
+<body>
+  <div style="margin: 48px;">
+    <h1>intensity-slider</h1>
+    <div class="example">
+      <intensity-slider>
+        <input id="example1" type="range" name="intense" min="1" max="10" value="1" />
+      </intensity-slider>
+      <pre id="example1code"></pre>
+    </div>
+    <script>
+    function showExample1 (event) {
+      example1code.innerHTML = escapeHtml(
+`<intensity-slider>
+  <input id="example1" type="range" name="intense" min="1" max="10" value="1" />
+</intensity-slider>`)
+    }
+    showExample1()
+    </script>
+  </div>
+
+  <script src="https://unpkg.com/github-corner@1.0.13"></script>
+  <github-corner href="https://github.com/aaronshaf/intensity-slider"></github-corner>
+</body>
