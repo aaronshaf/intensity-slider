@@ -53,7 +53,7 @@ export default class MyComponent extends Component {
 
   render () {
     return (
-      <div style="position: relative;">
+      <div style="position: relative; height: 300px;">
         <img
           style={`width: 250px; height: 250px;`}
           onMouseDown={this.handleMouseDown}
